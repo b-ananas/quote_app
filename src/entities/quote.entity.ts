@@ -1,15 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
-
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity } from 'typeorm';
+import { Author } from './author.entity';
 @Entity()
-export class Quote {
+export class Quote extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn() added: Date;
-
-  @Column()
-  author: string;
-
   @Column()
   content: string;
+
+  @ManyToOne(type => Author, author => author.quotes)
+  author: Author;
 }

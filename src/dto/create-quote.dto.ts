@@ -1,4 +1,5 @@
 export class CreateQuoteDto {
-  author: string;
+  authorFirstname: string;
+  authorLastname: string;
   content: string;
 }

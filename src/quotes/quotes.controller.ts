@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Param, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, Delete, Logger, HttpException, HttpStatus } from '@nestjs/common';
 import { QuotesService } from './quotes.service';
 import { Quote } from '../entities/quote.entity';
 import { CreateQuoteDto } from '../dto/create-quote.dto'
@@ -9,9 +9,14 @@ export class QuotesController {
   ) {}
   @Post()
   async create(@Body() createQuoteDto: CreateQuoteDto):Promise<Quote> {
-    const {author, content} = createQuoteDto;
-    if (author && content)
-      return this.quotesService.create(author, content);
+    const {authorFirstname, authorLastname, content} = createQuoteDto;
+    if (authorFirstname && authorLastname && content)
+      return this.quotesService.create({
+        firstname: authorFirstname,
+        lastname: authorLastname
+      }, content);
+    else 
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
   }
   @Get()
   async findAll(): Promise<Quote[]> {

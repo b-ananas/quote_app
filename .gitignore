@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# IDE
+/.idea
+/.awcache
+/.vscode
+*.code-workspace
+
+# misc
+
+npm-debug.log
+yarn-error.log
+
+
+#builds
+/dist
+
+
+#temporary
+README.md
+
+#environment
+.env
+

@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Param, Delete, Logger, HttpException, Http
 import { QuotesService } from './quotes.service';
 import { Quote } from '../entities/quote.entity';
 import { CreateQuoteDto } from '../dto/create-quote.dto'
+import { Author } from 'src/entities/author.entity';
 @Controller('quotes')
 export class QuotesController {
   constructor (
@@ -18,8 +19,24 @@ export class QuotesController {
     else 
       throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
   }
+  @Post('many')
+  async batchCreate(@Body() quotesArray: CreateQuoteDto[]):Promise<void> {
+    this.quotesService.createMany(quotesArray.map((quote) => { 
+      return {
+        author: {
+          firstname: quote.authorFirstname,
+          lastname: quote.authorLastname
+        },
+        content: quote.content
+      }
+    }));
+  }
   @Get()
-  async findAll(): Promise<Quote[]> {
+  async findAll() {
     return this.quotesService.findAll();
+  }
+  @Get(':id')
+  async findOne(@Param('id') id) {
+    return this.quotesService.findOne(id);
   }
 }

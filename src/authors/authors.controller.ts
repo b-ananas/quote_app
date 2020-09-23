@@ -10,13 +10,12 @@ export class AuthorsController {
   ) {}
   @Get()
   findAll():Promise<Author[]> {
-    Logger.log("AuthorsController");
     return this.authorsService.findAll();
   }
 
   @Post()
   async create(@Body('firstname') firstname, @Body('lastname') lastname) {
-    this.authorsService.create(firstname, lastname);
+    this.authorsService.createAndSave(firstname, lastname);
   }
   
 }

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity, JoinColumn } from 'typeorm';
 import { Author } from './author.entity';
 @Entity()
 export class Quote extends BaseEntity {
@@ -8,6 +8,7 @@ export class Quote extends BaseEntity {
   @Column()
   content: string;
 
-  @ManyToOne(type => Author, author => author.quotes)
+  @ManyToOne(type => Author, author => author.quotes, {eager: true})
+  @JoinColumn()
   author: Author;
 }

@@ -25,15 +25,11 @@ export class AuthorsService {
       return answ;
   }
   async findOrCreateByName(firstname:string, lastname:string):Promise<Author> {
-    Logger.log("findOrCreteBy");
-    Logger.log("this.findByName(firstname, lastname)", this.findByName(firstname, lastname).toString());
     if (await this.findByName(firstname, lastname)) {
-      Logger.log("found " + this.findByName(firstname, lastname).toString());
       return this.findByName(firstname, lastname);
     }
     else {
-      Logger.log("Created");
-      return this.create(firstname, lastname);
+      return this.createAndSave(firstname, lastname);
     }
   }
   async remove(id:string): Promise<void> {
@@ -44,7 +40,12 @@ export class AuthorsService {
       firstname: firstname,
       lastname: lastname
     })
-    await this.authorRepository.save(author);
     return author;
+  }
+  async createAndSave(firstname:string, lastname:string): Promise<Author> {
+    const author = await this.create(firstname, lastname);
+    await this.authorRepository.save(author);
+    return author
+
   }
 }
